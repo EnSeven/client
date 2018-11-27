@@ -4,8 +4,8 @@
   "description": "Group: Ashley Breunich, Mike Kermes, Nicholas Welch, Brandon Hayes",
   "main": "server.js",
   "scripts": {
-    "start": "node index.js",
-    "watch": "nodemon index.js",
+    "start": "node server.js",
+    "watch": "nodemon server.js",
     "test-watch": "jest --watchAll",
     "test": "jest",
     "lint": "eslint '**/*.js'"
