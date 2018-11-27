@@ -4,16 +4,24 @@
 const express = require('express');
 // const socket = io('http://localhost');
 
+// Prepare the express app
 const app = express();
-const PORT = 8080;
+
+const PORT = process.env.PORT || 8080;
+
+app.set('view engine', 'ejs');
+app.use(express.static('./public'));
+
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 // Routes
-app.get('/', (req,res) => {
-  res.send('Hello World!');
-});
+app.get('/', homePage);
+
+function homePage(request,response) {
+  response.render('site', {page:'./site', title:'Our Site: Proof of Life'});
+}
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 

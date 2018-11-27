@@ -2,10 +2,10 @@
   "name": "client",
   "version": "1.0.0",
   "description": "Group: Ashley Breunich, Mike Kermes, Nicholas Welch, Brandon Hayes",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js",
-    "watch": "nodemon index.js",
+    "start": "node server.js",
+    "watch": "nodemon server.js",
     "test-watch": "jest --watchAll",
     "test": "jest",
     "lint": "eslint '**/*.js'"
