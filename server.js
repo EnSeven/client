@@ -21,7 +21,7 @@ app.use(express.urlencoded({extended:true}));
 app.get('/', homePage);
 
 function homePage(request,response) {
-  response.render('site', {page:'./site', title:'Our Site: Proof of Life', status: 200});
+  response.render('site', {page:'./site', title:'Our Site: Proof of Life'});
 }
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
