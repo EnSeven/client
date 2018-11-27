@@ -6,6 +6,8 @@ const mockRequest = supertest(server);
 
 describe ('client server', () => {
 
+
+
   it('should respond with a 201 status when routed to the home page', () => {
     return mockRequest
       .get('/')
