@@ -6,9 +6,8 @@ const sockets = [];
 io.on('connection', (socket) => {
   sockets.push(socket);
   console.log('player 1 ready');
-  // sockets[socket.id] = socket;
   // socket.on('start', payload) => {
-  //   io.broadcast('player 1 ready');
+  //   io.broadcast(`player ${socket.id} ready`);
   // }
   socket.on('disconnect', () => {
     console.log('user disconnected');
