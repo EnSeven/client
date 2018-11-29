@@ -3,21 +3,21 @@
 const io = require('socket.io')(3000);
 const sockets = [];
 
+// when someone connects to the server (nodemon or node server.js)
 io.on('connection', (socket) => {
   sockets.push(socket);
-  console.log('player 1 ready');
-  // socket.on('start', payload) => {
-  //   io.broadcast(`player ${socket.id} ready`);
-  // }
+  // console.log('sockets', sockets);
+
+  // when someone connects via node client.js
+  socket.on('start', () => {
+    socket.emit('connected', `player ${socket.id} ready`);
+  });
+
+  // when someone disconnects via node client.js
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    console.log('user has left the game');
   });
-  socket.on('start', (payload) => {
-    console.log('paylod', payload);
-    socket.emit('connected', {message: 'hi'});
-  });
+
 });
-
-
 
 console.log('Ready to play on port 3000');
