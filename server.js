@@ -1,42 +1,26 @@
 'use strict';
 
-// 3rd Party Resources
-const express = require('express');
-// const socket = io('http://localhost');
+const io = require('socket.io')(3000);
+const sockets = [];
 
-// Prepare the express app
-const app = express();
+// when someone connects to the server (nodemon or node server.js)
+io.on('connection', (socket) => {
+  sockets.push(socket);
+  console.log('sockets', sockets);
 
-const PORT = process.env.PORT || 8080;
+  // when someone connects via node client.js
+  socket.on('start', () => {
+    socket.emit('connected', `Player ${socket.id} ready`);
+    console.log(`Player ${socket.id} has joined the game`);
 
-app.set('view engine', 'ejs');
-app.use(express.static('./public'));
+  });
 
+  // when someone disconnects via node client.js
+  socket.on('disconnect', () => {
+    socket.removeAllListeners();
+    console.log(`Player ${socket.id} has left the game`);
+  });
 
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+});
 
-// Routes
-app.get('/', homePage);
-
-function homePage(request,response) {
-  response.render('site', {page:'./site', title:'Our Site: Proof of Life'});
-}
-
-app.listen(PORT, () => console.log(`Listening on ${PORT}`));
-
-module.exports = {
-  server: app,
-  start: port => {
-    let PORT = port || process.env.PORT || 8080;
-    app.listen(PORT, () => console.log(`Listening on ${PORT}`));
-  },
-};
-
-// socket.on('connect', function(){
-//   socket.emit('message', 'Hello World');
-	
-//   socket.on('message', function(data){
-//     console.log('Message Received: ', data);
-//   });
-// });
+console.log('Ready to play on port 3000');
