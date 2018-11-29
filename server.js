@@ -12,6 +12,12 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
+  socket.on('start', (payload) => {
+    console.log('paylod', payload);
+    socket.emit('connected', {message: 'hi'});
+  });
 });
+
+
 
 console.log('Ready to play on port 3000');

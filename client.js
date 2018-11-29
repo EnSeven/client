@@ -1,5 +1,8 @@
 'use strict';
 const io = require('socket.io-client');
-io.connect('http://localhost:3000');
+let socket = io.connect('http://localhost:3000');
 
-io.emit('start', token);
+socket.on('connected', payload => {
+  console.log(payload);
+})
+socket.emit('start', 'khadkhaskdjhskd');
