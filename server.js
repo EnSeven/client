@@ -6,7 +6,7 @@ const sockets = [];
 // when someone connects to the server (nodemon or node server.js)
 io.on('connection', (socket) => {
   sockets.push(socket);
-  console.log('sockets', sockets);
+  // console.log('sockets', sockets);
 
   // when someone connects via node client.js
   socket.on('start', () => {
