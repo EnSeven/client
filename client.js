@@ -2,7 +2,8 @@
 const io = require('socket.io-client');
 const superagent = require('superagent');
 const prompt = require('prompt');
-const socket = io.connect('http://localhost:3000');
+const socket = io.connect('https://enseven-game-engine.herokuapp.com:3030');
+
 
 socket.on('connected', payload => {
   console.log(payload);
@@ -32,6 +33,7 @@ socket.on('connected', payload => {
       .set('Content-Type', 'application/json')
       .then(data =>{
         console.log('user data test', data);
+        socket.emit('join', data);
       })
       .catch(error => {
         console.log(error);
@@ -40,4 +42,4 @@ socket.on('connected', payload => {
 });
 
 // sending to sender-client only
-socket.emit('start', 'khadkhaskdjhskd');
+socket.emit('start');
