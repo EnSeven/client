@@ -2,7 +2,7 @@
 const io = require('socket.io-client');
 const superagent = require('superagent');
 const prompt = require('prompt');
-const socket = io.connect('https://enseven-game-engine.herokuapp.com:3030');
+const socket = io.connect('https://enseven-game-engine.herokuapp.com');
 
 
 socket.on('connected', payload => {
@@ -26,13 +26,19 @@ socket.on('connected', payload => {
   prompt.get(userSchema, function (err, result) {
     // Log the results.
     //result should be sent to API
-    console.log('results', JSON.stringify(result));
+
+    // console log for testing
+    // console.log('results', JSON.stringify(result));
+
     let newResult = JSON.stringify(result);
     superagent.post('https://enseven-api-service.herokuapp.com/signup')
       .send(newResult)
       .set('Content-Type', 'application/json')
       .then(data =>{
-        console.log('user data test', data);
+
+        // console log for testing
+        // console.log('user data test', data);
+        
         socket.emit('join', data);
       })
       .catch(error => {
