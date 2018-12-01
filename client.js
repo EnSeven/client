@@ -51,6 +51,7 @@ socket.on('connected', payload => {
 socket.emit('start');
 
 //test server to verify input output 
+import { WebSocket, Server } from 'mock-socket';
 
 import test from 'ava';
 import { Server } from 'mock-socket';
