@@ -9,7 +9,8 @@ io.on('connection', (socket) => {
   // console.log('sockets', sockets);
 
   // when someone connects via node client.js
-  socket.on('start', () => {
+  socket.on('start', (payload) => {
+    console.log('payload', payload);
     socket.emit('connected', `Player ${socket.id} ready`);
     console.log(`Player ${socket.id} has joined the game`);
 
