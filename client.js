@@ -1,10 +1,14 @@
 'use strict';
 
 const prompt = require('prompt');
+const colors = require('colors/safe');
+
+prompt.message = colors.zebra('EnSeven');
+prompt.properties.name = colors.rainbow('Username');
 
 const userSchema = {
   properties: {
-    username: {
+    Username: {
       pattern: /^[a-zA-Z0-9]+$/,
       message: 'Name must be only letters and numbers',
       required: true
