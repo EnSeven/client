@@ -3,6 +3,19 @@ const io = require('socket.io-client');
 const superagent = require('superagent');
 const prompt = require('prompt');
 const socket = io.connect('https://enseven-game-engine.herokuapp.com');
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.question('>>What\'s your name? ', function(answer){
+  console.log('Hello ' + answer);
+  rl.close();
+});
+
+
 
 
 socket.on('connected', payload => {
