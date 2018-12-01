@@ -16,6 +16,7 @@ const rl = readline.createInterface({
 rl.setPrompt('Welcome to N7 Games. To begin type LOGIN to login to an existing account, or type CREATE to create a new account.');
 rl.prompt();
 
+//this needs to be wrapped in an invokable function, it's auto kicking to this before doing the welcome prompt
 rl.question('LOGIN or CREATE account? ', function(answer){
   if(answer){
     switch(answer){
