@@ -1,8 +1,12 @@
 'use strict';
+
 const io = require('socket.io-client');
 const superagent = require('superagent');
 const prompt = require('prompt');
+
+const 
 const socket = io.connect('https://enseven-game-engine.herokuapp.com');
+//const socket = io.connect('https://enseven-game-engine.herokuapp.com');
 
 
 socket.on('connected', payload => {
@@ -22,6 +26,7 @@ socket.on('connected', payload => {
       },
     },
   };
+  
   // Get two properties from the user: email, password
   prompt.get(userSchema, function (err, result) {
     // Log the results.
@@ -38,7 +43,7 @@ socket.on('connected', payload => {
 
         // console log for testing
         // console.log('user data test', data);
-        
+
         socket.emit('join', data);
       })
       .catch(error => {
