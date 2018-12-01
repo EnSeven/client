@@ -21,7 +21,6 @@
   },
   "homepage": "https://github.com/EnSeven/client#readme",
   "dependencies": {
-    "ava": "^0.25.0",
     "babel-env": "^2.4.1",
     "babel-eslint": "^8.2.3",
     "babel-register": "^6.26.0",
