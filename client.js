@@ -5,10 +5,11 @@ const prompt = require('prompt');
 const socket = io.connect('https://enseven-game-engine.herokuapp.com');
 const readline = require('readline');
 
-//setting readline to read from standard (keyboard) input and output streams
+//setting readline to read from standard (keyboard) input and output streams. also setting a timeout limit if no input is received for any readline prompts / inputs.
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
+  escapeCodeTimeout: 30000,
 });
 
 
@@ -30,7 +31,7 @@ rl.question('LOGIN or CREATE account? ', function(answer){
     default:
       rl.setPrompt('LOGIN to login, CREATE to create new account. ');
       rl.prompt();
-      // once we wrap this question in a function, callback this function to run again.
+      // once we wrap this question in a function, callback this function to run again since the user did not type CREATE or LOGIN.
     }
   }
   rl.close();
