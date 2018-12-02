@@ -13,7 +13,7 @@ const rl = readline.createInterface({
 });
 
 
-// Welcome user. Explain how to use app by setting the rl prompt, and then calling the prompt
+// Welcome user. Explain how to use app by setting the rl prompt, and then calling the prompt eventually we wrap all direct prompts in their own functions / prompt file
 rl.setPrompt('Welcome to N7 Games. To begin type LOGIN to login to an existing account, or type CREATE to create a new account.');
 rl.prompt();
 
@@ -43,6 +43,9 @@ socket.on('connected', payload => {
   prompt.start();
   const userSchema = {
     properties: {
+      email: {
+        required: true,
+      },
       username: {
         pattern: /^[a-zA-Z0-9]+$/,
         message: 'Name must be only letters and numbers',
