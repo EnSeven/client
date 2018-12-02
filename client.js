@@ -1,6 +1,5 @@
 'use strict';
 const io = require('socket.io-client');
-// const superagent = require('superagent');
 const prompt = require('prompt');
 const socket = io.connect('https://enseven-game-engine.herokuapp.com');
 const readline = require('readline');
@@ -15,10 +14,9 @@ const rl = readline.createInterface({
 
 function welcomePrompt() {
   // Welcome user. Explain how to use app by setting the rl prompt, and then calling the prompt
-  rl.question('Welcome to N7 Games. To begin type LOGIN to login to an existing account, or type CREATE to create a new account.', function(answer) {
+  rl.question('Welcome to N7 Games. To begin type LOGIN to login to an existing account, or type CREATE to create a new account.  ', function(answer) {
     firstQuestionPromptLoop(answer);
   });
-  // firstQuestionPromptLoop();
 }
 
 function firstQuestionPromptLoop(answer) {
@@ -26,22 +24,20 @@ function firstQuestionPromptLoop(answer) {
   if(answer){
     switch(answer){
     case 'LOGIN':
+      rl.close();
       login();
       break;
     case 'CREATE':
-      // TODO: Check this out later
+      // TODO: Check out the rl.close later
       rl.close();
       create();
-      // rl.resume();
       break;
       //setting the default to kindly remind the user how to not cause errors and asking again
     default:
-      rl.setPrompt('LOGIN to login, CREATE to create new account. ');
-      firstQuestionPromptLoop();
+      welcomePrompt();
         // once we wrap this question in a function, callback this function to run again since the user did not type CREATE or LOGIN.
     }
   }
-  // console.log('brokeout of switch case');
 }
 
 
@@ -96,15 +92,14 @@ function create() {
   };
   // Get two properties from the user: email, password
   prompt.get(userSchema, function (err, result) {
-    // socket.emit('signup', result);
+    socket.emit('signup', result);
   });
 }
 
-// on connection start the prompt module and collect login / account based on the userSchema (we can and should keep userSchema outside of the function later on)
+// On connection start the prompt module and collect login / account based on the userSchema (we can and should keep userSchema outside of the function later on)
 socket.on('connected', payload => {
-  // console.log('payload', payload);
+  welcomePrompt();
 });
 
-// sending to sender-client only
-welcomePrompt();
+// Sending to sender-client only
 socket.emit('start');
