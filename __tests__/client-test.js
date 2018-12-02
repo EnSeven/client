@@ -13,7 +13,7 @@ const ioServer = require('socket.io')(3000);
 const client = require('../client.js');
 
 let urlVariable = 'https://enseven-game-engine.herokuapp.com';
-const socket = io.connect(urlVariable);
+const socketClient = ioClient.connect(urlVariable);
 
 describe('client app', () => {
   it('does not allow objects as a param', () => {
@@ -28,3 +28,22 @@ describe('client app', () => {
   });
 
 }); 
+
+describe('demo test to keep the open handles away', () => {
+  let app, server;
+
+  beforeAll(done => {
+      app = new express();
+      server = http.createServer(app);
+      server.listen(done);
+  });
+
+  afterAll(done => {
+      server.close(done);
+  });
+
+  it('returns 404 when sent to route that does not exist', async () => {
+      const response = await supertest(app).get('/foobar');
+      expect(response.status).toBe(404);
+  });
+});
