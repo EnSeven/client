@@ -2,7 +2,8 @@
 
 const io = require('socket.io-client');
 const prompt = require('prompt');
-const socket = io.connect('https://enseven-game-engine.herokuapp.com');
+// const socket = io.connect('https://enseven-game-engine.herokuapp.com');
+const socket = io.connect('https://localhost:3000');
 const readline = require('readline');
 
 //setting readline to read from standard (keyboard) input and output streams. also setting a timeout limit if no input is received for any readline prompts / inputs.
@@ -107,4 +108,8 @@ socket.on('connected', payload => {
 });
 
 // Sending to sender-client only
-socket.emit('start');
+function emitStart() {
+  socket.emit('start');
+}
+
+emitStart();
