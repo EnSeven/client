@@ -1,24 +1,25 @@
 'use strict';
 const io = require('socket.io-client');
-// const superagent = require('superagent');
 const prompt = require('prompt');
-const socket = io.connect('https://enseven-game-engine.herokuapp.com');
+const socket = io.connect('http://172.16.5.198:4040');
+// const socket = io.connect('https://enseven-game-engine.herokuapp.com');
+// const socket = io.connect('https://cdk-socket-io-test.herokuapp.com/');
+
 const readline = require('readline');
+// const players = io.of('/players');
 
 //setting readline to read from standard (keyboard) input and output streams. also setting a timeout limit if no input is received for any readline prompts / inputs.
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
-  escapeCodeTimeout: 30000,
+  escapeCodeTimeout: 20000,
 });
-
 
 function welcomePrompt() {
   // Welcome user. Explain how to use app by setting the rl prompt, and then calling the prompt
-  rl.question('Welcome to N7 Games. To begin type LOGIN to login to an existing account, or type CREATE to create a new account.', function(answer) {
+  rl.question('Welcome to N7 Games. To begin, type LOGIN to login to an existing account, or type CREATE to create a new account.  ', function(answer) {
     firstQuestionPromptLoop(answer);
   });
-  // firstQuestionPromptLoop();
 }
 
 function firstQuestionPromptLoop(answer) {
@@ -26,26 +27,21 @@ function firstQuestionPromptLoop(answer) {
   if(answer){
     switch(answer){
     case 'LOGIN':
-      login();
+      rl.close();
+      signin();
       break;
     case 'CREATE':
-      // TODO: Check this out later
+      // TODO: Check out the rl.close later
       rl.close();
-      create();
-      // rl.resume();
+      signup();
       break;
-      //setting the default to kindly remind the user how to not cause errors and asking again
     default:
-      rl.setPrompt('LOGIN to login, CREATE to create new account. ');
-      firstQuestionPromptLoop();
-        // once we wrap this question in a function, callback this function to run again since the user did not type CREATE or LOGIN.
+      welcomePrompt();
     }
   }
-  // console.log('brokeout of switch case');
 }
 
-
-function login() {
+function signin() {
   prompt.start();
   const userSchema = {
     properties: {
@@ -67,12 +63,13 @@ function login() {
       },
     },
   };
+  
   prompt.get(userSchema, function (err, result) {
-    socket.emit('signin', result);
+    socket.emit('sign-in', result);
   });
 }
 
-function create() {
+function signup() {
   prompt.start();
   const userSchema = {
     properties: {
@@ -81,30 +78,66 @@ function create() {
         required: true,
       },
       username: {
-        description: 'Enter your username',
+        description: 'Create a username',
         pattern: /^[a-zA-Z0-9]+$/,
         message: 'Name must be only letters and numbers',
         required: true,
       },
       password: {
-        description: 'Enter in your password',
+        description: 'Create a password',
         hidden: true,
         replace: '*',
         required: true,
       },
     },
   };
-  // Get two properties from the user: email, password
+  
   prompt.get(userSchema, function (err, result) {
-    // socket.emit('signup', result);
+    socket.emit('sign-in', result);
+    // rl.pause();
+    // rl.close();
   });
 }
 
-// on connection start the prompt module and collect login / account based on the userSchema (we can and should keep userSchema outside of the function later on)
-socket.on('connected', payload => {
-  // console.log('payload', payload);
+// username comes with this
+socket.on('signed-in-newuser', payload => {
+  let user = payload;
+  socket.emit('join', user);
+  console.log('signed in new user');
 });
+socket.on('player1-joined', payload => {
+  console.log('player1 joined', payload);
+});
+socket.on('player2-joined', payload => {
+  console.log('player2 joined', payload);
+});
+// we can broadcast 
+// PLAY Is what will start the game - need two of these in order for it to begin 
 
-// sending to sender-client only
-welcomePrompt();
+socket.emit('play');
+
+// socket.on('input-request')
+//     socket.emit('input', 'LETTER')
+
+// socket.on('won')
+
+// socket.on('lost')
+
+// socket.on('quit-game')
+//   socket.on('confirm-quit') // BOTH HAVE TO CONFIRM 
+//       socket.emit('quit-confirmed')
+
+//   socket.on('end', 'THIS QUITS COMPLETELY')
+
+//   socket.emit('get-stats')
+
+//   socket.on('stats', 'SHOW THE STATS')
+
+
+// Sending to game engine to START the game 
 socket.emit('start');
+
+socket.on('connected', payload => {
+  console.log(payload);
+  welcomePrompt();
+});
