@@ -1,49 +1,86 @@
 'use strict';
 
-// import { SocketIO, Server } from 'mock-socket';
+const io = require('socket.io-client');
+const http = require('http');
+const ioBack = require('socket.io');
 
-// const io = require('socket.io-client');
+let socket;
+let httpServer;
+let httpServerAddr;
+let ioServer;
 
-// Require the module under test
+/**
+ * Setup WS & HTTP servers
+ */
+beforeAll((done) => {
+  httpServer = http.createServer().listen();
+  httpServerAddr = httpServer.listen().address();
+  ioServer = ioBack(httpServer);
+  done();
+});
 
-const ioClient = require('socket.io-client');
-const ioServer = require('socket.io')(3000);
+/**
+ *  Cleanup WS & HTTP servers
+ */
+afterAll((done) => {
+  if(ioServer){
+    ioServer.close();
+  }
+  httpServer.close();
+  done();
+});
 
-
-const client = require('../client.js');
-
-let urlVariable = 'https://enseven-game-engine.herokuapp.com';
-const socketClient = ioClient.connect(urlVariable);
-
-describe('client app', () => {
-  it('does not allow objects as a param', () => {
-    let message = hello.sayHello({});
-    expect(message).toBeNull();
+/**
+ * Run before each test
+ */
+beforeEach((done) => {
+  // Setup
+  // Do not hardcode server port and address, square brackets are used for IPv6
+  socket = io.connect(`http://[${httpServerAddr.address}]:${httpServerAddr.port}`, {
+    'reconnection delay': 0,
+    'reopen delay': 0,
+    'force new connection': true,
+    transports: ['websocket'],
   });
-
-  it('works when given a word', () => {
-    var message = hello.sayHello('John');
-    var expectedOutput = 'Hello, John';
-    expect(message).toEqual(expectedOutput);
+  socket.on('connect', () => {
+    done();
   });
+});
 
-}); 
+/**
+ * Run after each test
+ */
+afterEach((done) => {
+  // Cleanup
+  if (socket) {
+    if (socket.connected) {
+      socket.disconnect();
+    }
+  }
+  done();
+});
 
-describe('demo test to keep the open handles away', () => {
-  let app, server;
 
-  beforeAll(done => {
-      app = new express();
-      server = http.createServer(app);
-      server.listen(done);
+describe('basic socket.io example', () => {
+  test('should communicate', (done) => {
+    // once connected, emit Hello World
+    ioServer.emit('echo', 'Hello World');
+    socket.once('echo', (message) => {
+      // Check that the message matches
+      expect(message).toBe('Hello World');
+      done();
+    });
+    ioServer.on('connection', (mySocket) => {
+      expect(mySocket).toBeDefined();
+    });
   });
-
-  afterAll(done => {
-      server.close(done);
-  });
-
-  it('returns 404 when sent to route that does not exist', async () => {
-      const response = await supertest(app).get('/foobar');
-      expect(response.status).toBe(404);
+  test('should communicate with waiting for socket.io handshakes', (done) => {
+    // Emit sth from Client do Server
+    socket.emit('examlpe', 'some messages');
+    // Use timeout to wait for socket.io server handshakes
+    setTimeout(() => {
+      // Put your server side expect() here
+      done();
+    }, 50);
   });
 });
