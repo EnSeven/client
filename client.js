@@ -16,6 +16,9 @@ const rl = readline.createInterface({
 // Welcome user. Explain how to use app by setting the rl prompt, and then calling the prompt eventually we wrap all direct prompts in their own functions / prompt file
 rl.setPrompt('Welcome to N7 Games. To begin type LOGIN to login to an existing account, or type CREATE to create a new account.');
 rl.prompt();
+// rl prompt opens the input stream, and should be paused after prompts if no input is needed... if streams stay open there may be input issues with the stream being double read by the prompt module using the same input stream
+rl.pause();
+
 
 //this needs to be wrapped in an invokable function, it's auto kicking to this before doing the welcome prompt
 rl.question('LOGIN or CREATE account? ', function(answer){
