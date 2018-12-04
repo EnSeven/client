@@ -11,7 +11,6 @@ const rl = readline.createInterface({
   escapeCodeTimeout: 30000,
 });
 
-
 function welcomePrompt() {
   // Welcome user. Explain how to use app by setting the rl prompt, and then calling the prompt
   rl.question('Welcome to N7 Games. To begin type LOGIN to login to an existing account, or type CREATE to create a new account.  ', function(answer) {
@@ -40,7 +39,6 @@ function firstQuestionPromptLoop(answer) {
   }
 }
 
-
 function login() {
   prompt.start();
   const userSchema = {
@@ -63,8 +61,11 @@ function login() {
       },
     },
   };
+  
   prompt.get(userSchema, function (err, result) {
-    socket.emit('signin', result);
+    console.log(result);
+    socket.emit('sign-in', result);
+    console.log('`Player ${socket.id} has signed in`');
   });
 }
 
@@ -90,14 +91,17 @@ function create() {
       },
     },
   };
-  // Get two properties from the user: email, password
+  
   prompt.get(userSchema, function (err, result) {
-    socket.emit('signup', result);
+    console.log('result', result);
+    socket.emit('sign-up', result);
+    console.log('`Player ${socket.id} has signed up`');
   });
 }
 
 // On connection start the prompt module and collect login / account based on the userSchema (we can and should keep userSchema outside of the function later on)
 socket.on('connected', payload => {
+  console.log(`Player ID ${socket.id} connected`);
   welcomePrompt();
 });
 
