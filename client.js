@@ -16,7 +16,7 @@ const rl = readline.createInterface({
   output: process.stdout,
   escapeCodeTimeout: 50000,
   completer: (line, callback) => {
-    const completions = '!help !quit !q !exit'.split(' ');
+    const completions = '!help !quit !q !exit CREATE LOGIN'.split(' ');
     const hits = completions.filter((c) => c.startsWith(line));
 
     setTimeout(
@@ -47,10 +47,10 @@ rl.question('LOGIN or CREATE account? ', function(answer){
     //setting the default to kindly remind the user how to not cause errors and asking again
     default:
       rl.setPrompt('LOGIN to login, CREATE to create new account. ');
-      rl.prompt();
+      rl.prompt([preserveCursor]);
       // once we wrap this question in a function, callback this function to run again since the user did not type CREATE or LOGIN.
     }
-  }
+  } 
   rl.close();
 });
 
