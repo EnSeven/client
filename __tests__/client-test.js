@@ -1,3 +1,4 @@
+'use strict';
 
 const io = require('socket.io-client');
 const http = require('http');
@@ -19,8 +20,8 @@ beforeAll((done) => {
 });
 
 /**
- *  Cleanup WS & HTTP servers
- */
+   *  Cleanup WS & HTTP servers
+   */
 afterAll((done) => {
   ioServer.close();
   httpServer.close();
@@ -28,8 +29,8 @@ afterAll((done) => {
 });
 
 /**
- * Run before each test
- */
+   * Run before each test
+   */
 beforeEach((done) => {
   // Setup
   // Do not hardcode server port and address, square brackets are used for IPv6
@@ -45,8 +46,8 @@ beforeEach((done) => {
 });
 
 /**
- * Run after each test
- */
+   * Run after each test
+   */
 afterEach((done) => {
   // Cleanup
   if (socket.connected) {
@@ -54,7 +55,6 @@ afterEach((done) => {
   }
   done();
 });
-
 
 describe('basic socket.io example', () => {
   test('should communicate', (done) => {
