@@ -122,9 +122,13 @@ socket.on('input-request-p2', () => {
   console.log('sending player 2 letter');
 });
 
-// socket.on('won')
+socket.on('won', () => {
+  console.log('You have won!');
+});
 
-// socket.on('lost')
+socket.on('lost', () => {
+  console.log('You have lost!');
+});
 
 // socket.on('quit-game')
 //   socket.on('confirm-quit') // BOTH HAVE TO CONFIRM 
@@ -132,7 +136,7 @@ socket.on('input-request-p2', () => {
 
 //   socket.on('end', 'THIS QUITS COMPLETELY')
 
-//   socket.emit('get-stats')
+socket.emit('get-stats')
 
 //   socket.on('stats', 'SHOW THE STATS')
 
