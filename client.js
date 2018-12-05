@@ -4,12 +4,26 @@ const superagent = require('superagent');
 const prompt = require('prompt');
 const socket = io.connect('https://enseven-game-engine.herokuapp.com');
 const readline = require('readline');
+const util = require('util');
+
+
 
 //setting readline to read from standard (keyboard) input and output streams. also setting a timeout limit if no input is received for any readline prompts / inputs.
+//completer will allow users to tab auto complete anything that is listed in the completions array (all string get split into array). later commands or completer words can have functionality tied to them.
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
-  escapeCodeTimeout: 30000,
+  escapeCodeTimeout: 50000,
+  completer: (line, callback) => {
+    const completions = '!help !quit !q !exit'.split(' ');
+    const hits = completions.filter((c) => c.startsWith(line));
+
+    setTimeout(
+      () => callback(null, [hits.length ? hits : completions, line]),
+      500,
+    );
+  },
 });
 
 
