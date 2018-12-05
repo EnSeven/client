@@ -3,10 +3,13 @@ const io = require('socket.io-client');
 const superagent = require('superagent');
 const prompt = require('prompt');
 const socket = io.connect('https://enseven-game-engine.herokuapp.com');
+const chalk = require('chalk');
+
+console.log(chalk.blue('Let the battle BEGIN!!!'));
 
 
 socket.on('connected', payload => {
-  console.log(payload);
+  console.log(chalk.bgMagenta(payload));
   prompt.start();
   const userSchema = {
     properties: {
