@@ -93,9 +93,7 @@ function signup() {
   };
   
   prompt.get(userSchema, function (err, result) {
-    socket.emit('sign-in', result);
-    // rl.pause();
-    // rl.close();
+    socket.emit('sign-up', result);
   });
 }
 
@@ -108,20 +106,29 @@ socket.on('signed-in-newuser', payload => {
 socket.on('player1-joined', payload => {
   console.log('player1 joined', payload);
 });
+
 socket.on('player2-joined', payload => {
   console.log('player2 joined', payload);
+  socket.emit('play');
 });
-// we can broadcast 
-// PLAY Is what will start the game - need two of these in order for it to begin 
 
-socket.emit('play');
+socket.on('input-request-p1', () => {
+  socket.emit('input-p1', 'A');
+  console.log('sending player 1 letter');
+});
 
-// socket.on('input-request')
-//     socket.emit('input', 'LETTER')
+socket.on('input-request-p2', () => {
+  socket.emit('input-p2', 'C');
+  console.log('sending player 2 letter');
+});
 
-// socket.on('won')
+socket.on('won', () => {
+  console.log('You have won!');
+});
 
-// socket.on('lost')
+socket.on('lost', () => {
+  console.log('You have lost!');
+});
 
 // socket.on('quit-game')
 //   socket.on('confirm-quit') // BOTH HAVE TO CONFIRM 
@@ -129,7 +136,7 @@ socket.emit('play');
 
 //   socket.on('end', 'THIS QUITS COMPLETELY')
 
-//   socket.emit('get-stats')
+socket.emit('get-stats')
 
 //   socket.on('stats', 'SHOW THE STATS')
 
