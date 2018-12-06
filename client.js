@@ -30,6 +30,7 @@ const rl = readline.createInterface({
 });
 
 function welcomePrompt() {
+  console.log('When prompted guess a letter to solve the hangman.\n Additional commands: !exit or !quit to stop playing, !stats to receive your game stats.')
   // Welcome user. Explain how to use app by setting the rl prompt, and then calling the prompt
   rl.question('Welcome to N7 Games. To begin, type LOGIN to login to an existing account, or type CREATE to create a new account.  ', function(answer) {
     firstQuestionPromptLoop(answer);
@@ -111,6 +112,11 @@ function signup() {
   });
 }
 
+//print help to user when !help is typed
+socket.on('!help', ()=> {
+  console.log('When prompted guess a letter to solve the hangman.\n Additional commands: !exit or !quit to stop playing, !stats to receive your game stats.')
+});
+
 // username comes with this
 socket.on('signed-in-newuser', payload => {
   let user = payload;
@@ -127,12 +133,12 @@ socket.on('player2-joined', payload => {
 });
 
 socket.on('input-request-p1', () => {
-  socket.emit('input-p1', 'A');
+  socket.emit('input-p1', userInput);
   console.log('sending player 1 letter');
 });
 
 socket.on('input-request-p2', () => {
-  socket.emit('input-p2', 'C');
+  socket.emit('input-p2', userInput);
   console.log('sending player 2 letter');
 });
 
