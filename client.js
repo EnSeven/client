@@ -5,6 +5,7 @@ const prompt = require('prompt');
 const socket = io.connect('https://enseven-game-engine.herokuapp.com');
 const chalk = require('chalk');
 
+
 console.log(chalk.blue('Let the battle BEGIN!!!'));
 
 
@@ -45,7 +46,7 @@ socket.on('connected', payload => {
         socket.emit('join', data);
       })
       .catch(error => {
-        console.log(error);
+        console.log(chalk.red(error));
       });
   });
 });
