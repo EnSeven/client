@@ -2,9 +2,9 @@
 
 // const client = require('socket.io-client')();
 // let socket = client.connect();
-const io = require('socket.io-client');
-// const socket = io.connect('https://cdk-socket-io-test.herokuapp.com/');
-const socket = io.connect('http://172.16.5.198:4040');
+const io = require('socket.io-client')();
+const socket = io.connect('https://cdk-socket-io-test.herokuapp.com/');
+// const socket = io.connect('http://172.16.5.198:4040');
 const readline = require('readline');
 const prompt = require('prompt');
 
@@ -105,14 +105,12 @@ game.signedInNewUser = () => {
     console.log('signed in new user');
   });
 };
-game.signedInNewUser();
 
 game.player1Joined = () => {
   socket.on('player1-joined', payload => {
     console.log('player1 joined', payload);
   });
 };
-game.player1Joined();
 
 game.player2Joined = () => {
   socket.on('player2-joined', payload => {
@@ -120,7 +118,6 @@ game.player2Joined = () => {
     socket.emit('play');
   });
 };
-game.player2Joined();
 
 game.inputRequestP1 = () => {
   socket.on('input-request-p1', () => {
@@ -128,7 +125,6 @@ game.inputRequestP1 = () => {
     console.log('sending player 1 letter');
   });
 };
-game.inputRequestP1();
 
 game.inputRequestP2 = () => {
   socket.on('input-request-p2', () => {
@@ -136,7 +132,6 @@ game.inputRequestP2 = () => {
     console.log('sending player 2 letter');
   });
 };
-game.inputRequestP2();
 
 game.won = () => {
   socket.on('won', () => {
@@ -150,20 +145,18 @@ game.lost = () => {
   });
 };
 
-// socket.emit('start');
-
-// socket.on('connected', payload => {
-//   console.log(payload);
-//   welcomePrompt();
-// });
-
 game.start = () => {
-//   socket.emit('start');
-//   console.log('starting....');
-  socket.emit('start', '', (payload) => console.log(payload));
-};
-      
-game.connected = () => {
+  socket.emit('start');
+  game.connect();
+  game.signedInNewUser();
+  game.player1Joined();
+  game.player2Joined();
+  game.inputRequestP1();
+  game.inputRequestP2();
+  return 'successfully started server';
+};    
+
+game.connect = () => {
   socket.on('connected', payload => {
     console.log(payload);
     game.welcomePrompt();
@@ -171,4 +164,3 @@ game.connected = () => {
 };
 
 game.start();
-game.connected();
