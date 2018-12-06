@@ -17,8 +17,13 @@ module.exports = () => {
       callback('ran', command);
     },
     
+    // TODO: possibly delete callback
     emit:  (command, payload, callback) => {
-      callback('server ran ' + command + ' with ' + JSON.stringify(payload));
+      if (callback) {
+        callback('server ran ' + command + ' with ' + JSON.stringify(payload));
+      } else {
+        console.log('server ran ' + command + ' with ' + JSON.stringify(payload));
+      }
     },
   };
   

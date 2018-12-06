@@ -1,9 +1,9 @@
 'use strict';
 const io = require('socket.io-client');
 const prompt = require('prompt');
-const socket = io.connect('http://172.16.5.198:4040');
+// const socket = io.connect('http://172.16.5.198:4040');
 // const socket = io.connect('https://enseven-game-engine.herokuapp.com');
-// const socket = io.connect('https://cdk-socket-io-test.herokuapp.com/');
+const socket = io.connect('https://cdk-socket-io-test.herokuapp.com/');
 
 const readline = require('readline');
 
@@ -136,7 +136,7 @@ socket.on('lost', () => {
 
 //   socket.on('end', 'THIS QUITS COMPLETELY')
 
-socket.emit('get-stats');
+// socket.emit('get-stats');
 
 //   socket.on('stats', 'SHOW THE STATS')
 
