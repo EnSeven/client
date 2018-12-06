@@ -6,7 +6,6 @@ const socket = io.connect('http://172.16.5.198:4040');
 // const socket = io.connect('https://cdk-socket-io-test.herokuapp.com/');
 
 const readline = require('readline');
-// const players = io.of('/players');
 
 //setting readline to read from standard (keyboard) input and output streams. also setting a timeout limit if no input is received for any readline prompts / inputs.
 const rl = readline.createInterface({
@@ -103,6 +102,7 @@ socket.on('signed-in-newuser', payload => {
   socket.emit('join', user);
   console.log('signed in new user');
 });
+
 socket.on('player1-joined', payload => {
   console.log('player1 joined', payload);
 });
@@ -136,7 +136,7 @@ socket.on('lost', () => {
 
 //   socket.on('end', 'THIS QUITS COMPLETELY')
 
-socket.emit('get-stats')
+socket.emit('get-stats');
 
 //   socket.on('stats', 'SHOW THE STATS')
 
