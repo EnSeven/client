@@ -1,7 +1,7 @@
 'use strict';
 const io = require('socket.io-client');
 const prompt = require('prompt');
-const socket = io.connect('http://172.16.5.198:4039');
+const socket = io.connect('http://172.16.3.123:4039');
 // const client = require('../Game-Engine/wordWizard/remoteClient.js');
 // const socket = io.connect('https://enseven-game-engine.herokuapp.com');
 // const socket = io.connect('https://cdk-socket-io-test.herokuapp.com/');
@@ -118,6 +118,7 @@ socket.on('player1-joined', payload => {
 });
 socket.on('input-request', (word) => {
   console.log(word.category);
+  console.log('Remaining Guesses:', word.count);
   console.log(word.string);
   prompt.start();
   const input = {

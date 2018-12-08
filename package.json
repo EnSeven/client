@@ -30,6 +30,7 @@
     "ejs": "^2.6.1",
     "eslint": "^5.8.0",
     "express": "^4.16.3",
+    "get-ip": "^2.0.0",
     "http": "0.0.0",
     "jest": "^23.6.0",
     "jest-mongoose-mock": "^1.1.3",
