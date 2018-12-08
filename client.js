@@ -1,10 +1,11 @@
 'use strict';
 const io = require('socket.io-client');
 const prompt = require('prompt');
-const socket = io.connect('http://172.16.5.198:4040');
+const socket = io.connect('http://172.16.5.198:4039');
+// const client = require('../Game-Engine/wordWizard/remoteClient.js');
 // const socket = io.connect('https://enseven-game-engine.herokuapp.com');
 // const socket = io.connect('https://cdk-socket-io-test.herokuapp.com/');
-
+let x = undefined;
 const readline = require('readline');
 // const players = io.of('/players');
 
@@ -103,23 +104,50 @@ socket.on('signed-in-newuser', payload => {
   socket.emit('join', user);
   console.log('signed in new user');
 });
-socket.on('player1-joined', payload => {
-  console.log('player1 joined', payload);
+socket.on('signed-in-user', payload => {
+  let user = payload;
+  socket.emit('join', user);
+  console.log('signed in returning user');
 });
 
+socket.on('player1-joined', payload => {
+  
+  console.log('player1 joined');
+  // console.log(payload);
+  socket.emit('play');
+});
+socket.on('input-request', (word) => {
+  console.log(word.category);
+  console.log(word.string);
+  prompt.start();
+  const input = {
+    properties: {
+      letter: {
+        description: 'Enter a letter',
+        required: true,
+      },
+    },
+  };
+  
+  prompt.get(input, function (err, result) {
+    socket.emit('input', result.letter);
+  });
+  
+});
+// socket.on('input-request', output => {
+//   client.promptInquirer(client.gameState);
+// });
+
 socket.on('player2-joined', payload => {
-  console.log('player2 joined', payload);
+  console.log('player2 joined');
+  console.log(payload);
   socket.emit('play');
 });
 
-socket.on('input-request-p1', () => {
-  socket.emit('input-p1', 'A');
-  console.log('sending player 1 letter');
-});
 
-socket.on('input-request-p2', () => {
-  socket.emit('input-p2', 'C');
-  console.log('sending player 2 letter');
+socket.on('results', results => {
+  console.log('results:', results);
+  socket.emit('play');
 });
 
 socket.on('won', () => {
@@ -130,16 +158,19 @@ socket.on('lost', () => {
   console.log('You have lost!');
 });
 
+
 // socket.on('quit-game')
 //   socket.on('confirm-quit') // BOTH HAVE TO CONFIRM 
 //       socket.emit('quit-confirmed')
 
 //   socket.on('end', 'THIS QUITS COMPLETELY')
 
-socket.emit('get-stats')
+socket.emit('get-stats');
 
 //   socket.on('stats', 'SHOW THE STATS')
-
+socket.on('output', (output) => {
+  console.log(output);
+});
 
 // Sending to game engine to START the game 
 socket.emit('start');
