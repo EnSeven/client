@@ -1,13 +1,11 @@
 'use strict';
 const io = require('socket.io-client');
 const prompt = require('prompt');
-const socket = io.connect('http://172.16.3.123:4039');
+// const socket = io.connect('http://172.16.5.198:4039');
 // const client = require('../Game-Engine/wordWizard/remoteClient.js');
-// const socket = io.connect('https://enseven-game-engine.herokuapp.com');
 // const socket = io.connect('https://cdk-socket-io-test.herokuapp.com/');
-let x = undefined;
+const socket = io.connect('https://enseven-game-engine.herokuapp.com');
 const readline = require('readline');
-// const players = io.of('/players');
 
 //setting readline to read from standard (keyboard) input and output streams. also setting a timeout limit if no input is received for any readline prompts / inputs.
 const rl = readline.createInterface({
@@ -111,14 +109,11 @@ socket.on('signed-in-user', payload => {
 });
 
 socket.on('player1-joined', payload => {
-  
   console.log('player1 joined');
-  // console.log(payload);
   socket.emit('play');
 });
 socket.on('input-request', (word) => {
   console.log(word.category);
-  console.log('Remaining Guesses:', word.count);
   console.log(word.string);
   prompt.start();
   const input = {
