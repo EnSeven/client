@@ -31,7 +31,6 @@ game.firstQuestionPromptLoop = (answer) => {
       game.signin();
       break;
     case 'CREATE':
-      // TODO: Check out the rl.close later
       rl.close();
       game.signup();
       break;

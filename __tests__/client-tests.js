@@ -2,9 +2,8 @@
 
 jest.mock('socket.io');
 jest.mock('socket.io-client');
-
 // const server = require('../__mocks__/mock-server.js');
-const game = require('../client-refactored.js');
+const game = require('../refactored-code-for-testing/client-refactored.js');
 
 describe('CLIENT.JS', () => {
 
