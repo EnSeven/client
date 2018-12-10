@@ -113,8 +113,10 @@ socket.on('player1-joined', payload => {
   socket.emit('play');
 });
 socket.on('input-request', (word) => {
+  let count = word.count + 1;
   console.log(word.category);
   console.log(word.string);
+  console.log(`You have ${count} guesses left`);
   prompt.start();
   const input = {
     properties: {
