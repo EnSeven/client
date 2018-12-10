@@ -30,7 +30,6 @@ function firstQuestionPromptLoop(answer) {
       signin();
       break;
     case 'CREATE':
-      // TODO: Check out the rl.close later
       rl.close();
       signup();
       break;
@@ -114,9 +113,9 @@ socket.on('player1-joined', payload => {
 });
 socket.on('input-request', (word) => {
   let count = word.count + 1;
+  console.log(`You have ${count} guesses left`);
   console.log(word.category);
   console.log(word.string);
-  console.log(`You have ${count} guesses left`);
   prompt.start();
   const input = {
     properties: {
@@ -132,16 +131,12 @@ socket.on('input-request', (word) => {
   });
   
 });
-// socket.on('input-request', output => {
-//   client.promptInquirer(client.gameState);
-// });
 
 socket.on('player2-joined', payload => {
   console.log('player2 joined');
   console.log(payload);
   socket.emit('play');
 });
-
 
 socket.on('results', results => {
   console.log('results:', results);
@@ -156,16 +151,6 @@ socket.on('lost', () => {
   console.log('You have lost!');
 });
 
-
-// socket.on('quit-game')
-//   socket.on('confirm-quit') // BOTH HAVE TO CONFIRM 
-//       socket.emit('quit-confirmed')
-
-//   socket.on('end', 'THIS QUITS COMPLETELY')
-
-socket.emit('get-stats');
-
-//   socket.on('stats', 'SHOW THE STATS')
 socket.on('output', (output) => {
   console.log(output);
 });
